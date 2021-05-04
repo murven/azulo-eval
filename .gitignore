@@ -1,0 +1,11 @@
+# Files editor vs
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# dependencies directus
+/role/fullstack/senior/Gabriel-P-Guarachi/airport-directus/node_modules
+/role/fullstack/senior/Gabriel-P-Guarachi/airport-directus/package-lock.json
