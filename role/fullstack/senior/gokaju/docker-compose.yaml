@@ -15,9 +15,9 @@ services:
   flyway:
     image: flyway/flyway:9.3
     restart: unless-stopped
-    command: -url=jdbc:mysql://db -schemas=myschema -user=root -password=rootP@ssw0rd -connectRetries=60 migrate
+    command: -url=jdbc:mysql://db -schemas=airport -user=root -password=rootP@ssw0rd -connectRetries=60 migrate
     volumes:
-      - ./custom/flyway/sql:/flyway/sql
+      - ./custom/db/migrations:/flyway/sql
     depends_on:
       - db
 
@@ -30,11 +30,12 @@ services:
       - ./custom/directus/uploads:/directus/uploads
     depends_on:
       - db
+      - flyway
     environment:
       DB_CLIENT: mysql
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: airport
+      DB_DATABASE: directus
       DB_USER: root
       DB_PASSWORD: rootP@ssw0rd
       ADMIN_EMAIL: admin@email.com
