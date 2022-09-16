@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: rootP@ssw0rd
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+
+  flyway:
+    image: flyway/flyway:9.3
+    restart: unless-stopped
+    command: -url=jdbc:mysql://db -schemas=myschema -user=root -password=rootP@ssw0rd -connectRetries=60 migrate
+    volumes:
+      - ./custom/flyway/sql:/flyway/sql
+    depends_on:
+      - db
+
+  directus:
+    image: directus/directus:9.0
+    restart: unless-stopped
+    ports:
+      - 8055:8055
+    volumes:
+      - ./custom/directus/uploads:/directus/uploads
+    depends_on:
+      - db
+    environment:
+      DB_CLIENT: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: airport
+      DB_USER: root
+      DB_PASSWORD: rootP@ssw0rd
+      ADMIN_EMAIL: admin@email.com
+      ADMIN_PASSWORD: d1r3ctu5P@ssw0rd
+
+volumes:
+  mysql:
