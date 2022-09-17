@@ -35,11 +35,13 @@ services:
       DB_CLIENT: mysql
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: directus
+      DB_DATABASE: airport
       DB_USER: root
       DB_PASSWORD: rootP@ssw0rd
       ADMIN_EMAIL: admin@email.com
       ADMIN_PASSWORD: d1r3ctu5P@ssw0rd
+      KEY: "255d861b-5ea1-5996-9aa3-922530ec40b1"
+      SECRET: "6116487b-cda1-52c2-b5b5-c8022c45e263"
 
 volumes:
   mysql:
