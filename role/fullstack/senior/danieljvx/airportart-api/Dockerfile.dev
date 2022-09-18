@@ -1,0 +1,15 @@
+FROM node:16.13-alpine
+
+RUN mkdir -p /usr/src/api
+
+WORKDIR /usr/src/api
+COPY ./package*.json ./
+
+RUN npm install -g yarn --pure-lockfile --allow-root --force
+RUN yarn add glob rimraf
+RUN yarn install
+COPY . .
+RUN ls
+
+EXPOSE 8000
+CMD ["yarn", "start"]
