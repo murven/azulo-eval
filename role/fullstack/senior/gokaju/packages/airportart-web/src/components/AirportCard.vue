@@ -32,19 +32,19 @@ defineProps<{
   transform: scale(1.05);
 }
 .title {
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   color: #333;
   text-align: left;
 }
 .content {
-  font-size: 1em;
+  font-size: 0.8em;
   color: #666;
   text-align: left;
 }
 
 .footer {
-  font-size: 0.8em;
+  font-size: 0.7em;
   color: #666;
   display: flex;
   justify-content: flex-end;
