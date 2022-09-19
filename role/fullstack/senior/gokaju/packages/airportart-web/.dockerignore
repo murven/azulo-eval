@@ -1,0 +1,4 @@
+# Ignora estos elementos en la copia de docker
+node_modules
+gitignore
+git

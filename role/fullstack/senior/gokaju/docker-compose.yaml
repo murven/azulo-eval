@@ -14,7 +14,7 @@ services:
 
   flyway:
     image: flyway/flyway:9.3
-    restart: unless-stopped
+    restart: "no"
     command: -url=jdbc:mysql://db -schemas=airport -user=root -password=rootP@ssw0rd -connectRetries=60 migrate
     volumes:
       - ./custom/db/migrations:/flyway/sql
@@ -56,6 +56,16 @@ services:
       - DB_PASSWORD=rootP@ssw0rd
     depends_on:
       - db
+
+  web:
+    build: ./packages/airportart-web/
+    restart: unless-stopped
+    ports:
+      - 3001:80
+    environment:
+      - API_URL=http://localhost:3000
+    depends_on:
+      - api
 
 volumes:
   mysql:
