@@ -2,8 +2,10 @@ import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+import "@fontsource/open-sans";
 import App from './App';
 import theme from './theme';
+import './root.css';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);

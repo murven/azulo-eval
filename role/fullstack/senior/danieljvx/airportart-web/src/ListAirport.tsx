@@ -30,7 +30,7 @@ const ListAirport: FC = () => {
   const getAirports = () => {
     setLoadingAirports(true);
     fetch(
-      `${process.env.REACT_APP_DIRECTUS_API_URL}/items/airport?fields=*.*.*`
+      `${process.env.REACT_APP_DIRECTUS_API_URL}/items/airport?sort=priority_order&fields=*.*.*`
     )
       .then((response) => response.json())
       .then((respAirports) => {

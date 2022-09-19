@@ -25,7 +25,6 @@ export class AirportController {
     @Param('id') id: number,
   ): Promise<AirportEntity> {
     const airportEdited = await this.airportService.changeOperator(id, airport);
-    console.log('airportEdited', airportEdited);
     return airportEdited;
   }
 
@@ -38,7 +37,6 @@ export class AirportController {
       id,
       airport,
     );
-    console.log('airportEdited', airportEdited);
     return airportEdited;
   }
 }

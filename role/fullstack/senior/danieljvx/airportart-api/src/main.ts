@@ -17,6 +17,6 @@ async function bootstrap() {
     customfavIcon:
       'https://images.squarespace-cdn.com/content/v1/627ad6d3c792b318dfe5fd33/2f23e5b2-bfa1-456b-92e1-b720b4ff0d0c/favicon.ico?format=100w',
   });
-  await app.listen(8000);
+  await app.listen(9000);
 }
 bootstrap();
