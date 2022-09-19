@@ -1,0 +1,37 @@
+# Comandos para generar datos de prueba usando datamaker ( npm install -g datamaker )
+# Airplanes
+echo "INSERT INTO airport.Airplanes (marca, licence) VALUES ('{{oneof Airbus Boeing Lockheed-Martin Cesnna}}','{{letters 3}}{{integer 1000 2000}}');" | datamaker --format csv --iterations 10000 > airplanes.csv 
+
+# Pilots
+echo "INSERT INTO airport.Pilots (name) VALUES ('{{name}}');" | datamaker --format csv --iterations 10000 > pilots.csv 
+
+# Locations
+
+echo "INSERT INTO airport.Location (country, provinceOrState, longitude, latitude) VALUES ('{{country}}
+','{{state}}','{{longitude}}','{{latitude}}');" | datamaker --format csv --iterations 10000 > locations.csv
+
+# AirportOperator
+
+echo "INSERT INTO airport.AirportOperator (name) VALUES ('{{company}}');" | datamaker --format csv --iterations 10000 > airportOperator.csv
+
+# Airports
+
+echo "INSERT INTO airport.Airport (name, airportOperatorId, airportCode, locationId, priorityOrder) VALUES ('{{city}} Airport','{{integer 1 10000}}','{{letters 2}}{{integer 1 900}}','{{integer 1 10000}}','{{integer 1 10000}}');" | datamaker --format csv --iterations 10000 > airports.csv
+
+# Flights
+CREATE TABLE airport.Flights (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    AirportId INT NOT NULL,
+    departureDate  DATETIME NOT NULL,
+    destinationAirportId INT NOT NULL,
+    airplaneId INT NOT NULL,
+    pilotId INT NOT NULL,
+    FOREIGN KEY (AirportId) REFERENCES airport.Airport(id),
+    FOREIGN KEY (destinationAirportId) REFERENCES airport.Airport(id),
+    FOREIGN KEY (airplaneId) REFERENCES airport.Airplanes(id),
+    FOREIGN KEY (pilotId) REFERENCES airport.Pilots(id)
+);
+
+echo "INSERT INTO airport.Flights (AirportId, departureDate, destinationAirportId, airplaneId, pilotId) VALUES ('{{integer 1 10000}}','{{date}}','{{integer 1 10000}}','{{integer 1 10000}}','{{integer 1 10000}}');" | datamaker --format csv --iterations 10000 > flights.csv
+
+
