@@ -49,11 +49,11 @@ services:
         - mysql
 
   directus:
+    env_file:
+        - .env.dev
     build:
       context: ./directus
       dockerfile: ./Dockerfile
-    env_file:
-        - .env.dev
     ports:
       - "8055:8055"
     environment:
@@ -78,6 +78,8 @@ services:
       - mysql
 
   airportart-api:
+    env_file:
+      - .env.dev
     build:
       context: ./airportart-api
       dockerfile: ./Dockerfile.dev
@@ -92,6 +94,8 @@ services:
       - directus
 
   airportart-web:
+    env_file:
+      - .env.dev
     build:
       context: ./airportart-web
       dockerfile: ./Dockerfile.dev

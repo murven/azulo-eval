@@ -9,6 +9,8 @@ networks:
 
 services:
   mysql:
+    env_file:
+    - .env.prod
     build:
       context: ./mysql
       dockerfile: ./Dockerfile
@@ -25,6 +27,8 @@ services:
       - danieljvx-airportart
 
   flyway:
+    env_file:
+      - .env.prod
     build:
       context: ./flyway
       dockerfile: ./Dockerfile
@@ -44,6 +48,8 @@ services:
         - mysql
 
   directus:
+    env_file:
+      - .env.prod
     build:
       context: ./directus
       dockerfile: ./Dockerfile
@@ -71,6 +77,8 @@ services:
       - mysql
 
   airportart-api:
+    env_file:
+      - .env.prod
     build:
       context: ./airportart-api
       dockerfile: ./Dockerfile.prod
@@ -85,6 +93,8 @@ services:
       - directus
 
   airportart-web:
+    env_file:
+      - .env.prod
     build:
       context: ./airportart-web
       dockerfile: ./Dockerfile.prod
