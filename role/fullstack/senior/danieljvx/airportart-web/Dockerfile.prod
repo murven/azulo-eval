@@ -9,9 +9,15 @@ RUN mkdir -p /usr/src/web
 WORKDIR /usr/src/web
 COPY ./package*.json ./
 
+RUN npm install -g http-server --pure-lockfile --allow-root --force
 RUN npm install -g yarn --pure-lockfile --allow-root --force
 RUN yarn install
 COPY . .
-RUN ls
 
 RUN npm run build --loglevel verbose
+
+RUN ls
+
+EXPOSE 3000
+
+CMD ["http-server", "./build/build", "-p 3000"]

@@ -98,8 +98,10 @@ services:
     build:
       context: ./airportart-web
       dockerfile: ./Dockerfile.prod
+    ports:
+      - "3000:3000"
     volumes:
-      - airportart-web-data:/usr/src/web
+      - airportart-web-data:/usr/src/web/build
     networks:
       - danieljvx-airportart
     depends_on:
@@ -110,12 +112,11 @@ services:
       context: ./nginx
       dockerfile: ./Dockerfile
     links: 
+      - airportart-web:airportart-web
       - airportart-api:airportart-api
       - directus:directus
     ports:
       - "8085:8085"
-    volumes:
-      - airportart-web-data:/usr/src/web
     networks:
       - danieljvx-airportart
     depends_on:
