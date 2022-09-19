@@ -1,0 +1,27 @@
+FROM node:16.13-alpine
+
+ARG MYSQL_DATABASE
+ARG MYSQL_USER
+ARG MYSQL_PASSWORD
+
+ENV MYSQL_DATABASE=$MYSQL_DATABASE
+ENV MYSQL_USER=$MYSQL_USER
+ENV MYSQL_PASSWORD=$MYSQL_PASSWORD
+
+RUN mkdir -p /usr/src/api
+
+WORKDIR /usr/src/api
+COPY ./package*.json ./
+
+RUN npm install -g yarn --pure-lockfile --allow-root --force
+RUN yarn add glob rimraf
+RUN yarn install
+
+COPY . .
+
+RUN yarn build
+
+RUN ls
+
+EXPOSE 8000
+CMD ["node", "/usr/src/api/dist/main"]

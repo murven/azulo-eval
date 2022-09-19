@@ -1,0 +1,111 @@
+version: "3"
+
+volumes:
+  airportart-api-data:
+  airportart-web-data:
+networks:
+  danieljvx-airportart:
+    driver: bridge
+
+services:
+  mysql:
+    env_file:
+        - .env.dev
+    build:
+      context: ./mysql
+      dockerfile: ./Dockerfile
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    networks:
+      - danieljvx-airportart
+
+  flyway:
+    env_file:
+      - .env.dev
+    build:
+      context: ./flyway
+      dockerfile: ./Dockerfile
+    ports:
+      - "8180:8180"
+    environment:
+      - FLYWAY_USER=${DB_USER}
+      - FLYWAY_PASSWORD=${DB_PASSWORD}
+      - FLYWAY_URL=jdbc:${DB_TYPE}://mysql:${DB_PORT}/${DB_DATABASE}?verifyServerCertificate=false&useSSL=true
+      - FLYWAY_GROUP=${FLYWAY_GROUP}
+      - FLYWAY_LICENSE_KEY=${FLYWAY_LICENSE_KEY}
+      - FLYWAY_EDITION=${FLYWAY_EDITION}
+    links:
+      - mysql:mysql
+    volumes:
+      - .:/flyway/sql
+    depends_on:
+        - mysql
+
+  directus:
+    env_file:
+        - .env.dev
+    build:
+      context: ./directus
+      dockerfile: ./Dockerfile
+    ports:
+      - "8055:8055"
+    environment:
+      - KEY=${DIRECTUS_AUTH_PUBLICKEY}
+      - SECRET=${DIRECTUS_AUTH_SECRETKEY}
+      - ADMIN_EMAIL=${DIRECTUS_ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${DIRECTUS_ADMIN_PASS}
+      - DB_CLIENT=${DB_TYPE}
+      - DB_HOST=mysql
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    links:
+      - mysql:mysql
+    volumes:
+      - ./directus/data/config:/var/directus/config
+      - ./directus/data/uploads:/var/directus/public/uploads
+    networks:
+      - danieljvx-airportart
+    depends_on:
+      - mysql
+
+  airportart-api:
+    env_file:
+      - .env.dev
+    build:
+      context: ./airportart-api
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - airportart-api-data:/usr/src/api
+    command: yarn start
+    networks:
+      - danieljvx-airportart
+    depends_on:
+      - directus
+
+  airportart-web:
+    env_file:
+      - .env.dev
+    build:
+      context: ./airportart-web
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - airportart-web-data:/usr/src/web
+    command: yarn start
+    networks:
+      - danieljvx-airportart
+    depends_on:
+      - airportart-api
+  

@@ -1,0 +1,18 @@
+FROM node:16.13-alpine
+
+ARG REACT_APP_DIRECTUS_API_URL
+
+ENV REACT_APP_DIRECTUS_API_URL=$REACT_APP_DIRECTUS_API_URL
+
+RUN mkdir -p /usr/src/web
+
+WORKDIR /usr/src/web
+COPY ./package*.json ./
+
+RUN npm install -g yarn --pure-lockfile --allow-root --force
+RUN yarn install
+COPY . .
+RUN ls
+
+EXPOSE 3000
+CMD ["yarn", "start"]
