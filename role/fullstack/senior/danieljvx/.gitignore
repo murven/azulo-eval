@@ -1,4 +1,5 @@
-/directus
+/directus/data
+/mysql/data
 /airportart-api/dist
 /airportart-api/node_modules
 /airportart-web/build

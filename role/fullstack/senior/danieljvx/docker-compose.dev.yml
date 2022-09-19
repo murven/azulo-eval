@@ -9,9 +9,11 @@ networks:
 
 services:
   mysql:
-    image: mysql:5.7
     env_file:
         - .env.dev
+    build:
+      context: ./mysql
+      dockerfile: ./Dockerfile
     environment:
       - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_USER=${DB_USER}
@@ -19,27 +21,37 @@ services:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
     ports:
       - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
     networks:
       - danieljvx-airportart
 
   flyway:
-    image: flyway/flyway:latest
     env_file:
-        - .env.dev
+      - .env.dev
+    build:
+      context: ./flyway
+      dockerfile: ./Dockerfile
+    ports:
+      - "8180:8180"
     environment:
-        - FLYWAY_USER=${DB_USER}
-        - FLYWAY_PASSWORD=${DB_PASSWORD}
-        - FLYWAY_URL=jdbc:${DB_TYPE}://danieljvx-airportart:${DB_PORT}/${DB_DATABASE}?verifyServerCertificate=false&useSSL=true
-        - FLYWAY_GROUP=${FLYWAY_GROUP}
-        - FLYWAY_LICENSE_KEY=${FLYWAY_LICENSE_KEY}
-        - FLYWAY_EDITION=${FLYWAY_EDITION}
+      - FLYWAY_USER=${DB_USER}
+      - FLYWAY_PASSWORD=${DB_PASSWORD}
+      - FLYWAY_URL=jdbc:${DB_TYPE}://mysql:${DB_PORT}/${DB_DATABASE}?verifyServerCertificate=false&useSSL=true
+      - FLYWAY_GROUP=${FLYWAY_GROUP}
+      - FLYWAY_LICENSE_KEY=${FLYWAY_LICENSE_KEY}
+      - FLYWAY_EDITION=${FLYWAY_EDITION}
+    links:
+      - mysql:mysql
     volumes:
-        - ./flyway
+      - .:/flyway/sql
     depends_on:
         - mysql
 
   directus:
-    image: directus/directus:latest
+    build:
+      context: ./directus
+      dockerfile: ./Dockerfile
     env_file:
         - .env.dev
     ports:
@@ -55,6 +67,8 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
+    links:
+      - mysql:mysql
     volumes:
       - ./directus/data/config:/var/directus/config
       - ./directus/data/uploads:/var/directus/public/uploads

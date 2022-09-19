@@ -1,6 +1,6 @@
 # Azulo Eval @danieljvx
 
-## Development UP
+# Env Development
 
 
 ### `1. Up All conntainer:`
@@ -24,8 +24,16 @@ docker-compose run --rm ./flyway flyway -url=jdbc:mysql://localhost:3306 -schema
 Email: villanueva.danielx@gmail.com
 Password 123qwe
 ```
+### `airport-api:`
+| Resource | Type | Path | Body |
+| ------ | ------ | ------ | ------ |
+| List Airports | GET | [http://localhost:8000/v1/airport?page=1&perPage=2&search=Internacional](http://localhost:8000/v1/airport?page=1&perPage=2&search=Internacional) | null |
+| Change Operator | PUT | [http://localhost:8000/v1/airport/operator/:id](http://localhost:8000/v1/airport/operator/:id) | { operatorId: number } |
+| Change Priority Order | PUT | [http://localhost:8000/v1/airport/priority-order/:id](http://localhost:8000/v1/airport/priority-order/:id) | { priorityOrder: number } |
 
-## Production UP
+
+
+# Env Production
 
 
 ### `1. Up All conntainer:`
@@ -46,6 +54,12 @@ docker-compose -f docker-compose.prod.yml --env-file ./.env.prod up
 Email: villanueva.danielx@gmail.com
 Password 123qweasd
 ```
+### `airport-api:`
+| Resource | Type | Path | Body |
+| ------ | ------ | ------ | ------ |
+| List Airports | GET | [http://localhost:8085/api/v1/airport?page=1&perPage=2&search=Internacional](http://localhost:8085/api/v1/airport?page=1&perPage=2&search=Internacional) | null |
+| Change Operator | PUT | [http://localhost:8085/api/v1/airport/operator/:id](http://localhost:8085/api/v1/airport/operator/:id) | { operatorId: number } |
+| Change Priority Order | PUT | [http://localhost:8085/api/v1/airport/priority-order/:id](http://localhost:8085/api/v1/airport/priority-order/:id) | { priorityOrder: number } |
 
 
 ## Daniel Villanueva

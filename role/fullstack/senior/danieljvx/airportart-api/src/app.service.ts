@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  getApiMessages(): string {
+    return 'Api for Azulo Eval go to /v1/airport';
   }
 }
