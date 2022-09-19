@@ -1,0 +1,129 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Airportar API",
+    "description": "Technical test to apply for a job at Azulo",
+    "license": {
+      "name": "UNLICENSED"
+    }
+  },
+  "paths": {
+    "/api/v1/airports/change-operator": {
+      "post": {
+        "summary": "Change Operator of an Airport",
+        "operationId": "AirportChangeOperator",
+        "tags": ["airports"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirportChangeOperator"
+              }
+            }
+          },
+          "description": "Airport object that needs to be change the operator",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Null response"
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/airports/bulk-change-priority": {
+      "post": {
+        "summary": "Change Order priority of an Airport",
+        "operationId": "AirportChangePriority",
+        "tags": ["airports"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AirportChangeOperator"
+              }
+            }
+          },
+          "description": "Airport object that needs to be change the priority",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Null response"
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AirportChangeOperator": {
+        "type": "object",
+        "required": ["airportId", "newOperatorId"],
+        "properties": {
+          "airportId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "newOperatorId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "AirportChangePriority": {
+        "type": "object",
+        "required": ["airports", "newOperatorId"],
+        "properties": {
+          "airports": {
+            "type": "array",
+            "items": {
+              "airportId": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "newPriority": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
