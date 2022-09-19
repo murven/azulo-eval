@@ -34,6 +34,6 @@ INSERT INTO airport.Airport ( name, airportOperatorId, airportCode, locationId, 
     ('O’Hare International Airport', 6, 'ORD', 6, 6),
     ('Seattle–Tacoma International Airport', 7, 'SEA', 7, 7),
     ('Newark Liberty International Airport', 8, 'EWR', 8, 8),
-    ('Hartsfield–Jackson Atlanta International Airport', 9, 'ATL',9, 9),
+    ('Jackson Atlanta International Airport', 9, 'ATL',9, 9),
     ('Charlotte Douglas International Airport', 10, 'CLT',10, 10);
 
