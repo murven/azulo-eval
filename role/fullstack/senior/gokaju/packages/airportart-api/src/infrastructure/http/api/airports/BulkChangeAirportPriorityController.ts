@@ -7,6 +7,7 @@ import { MySqlOperatorRepository } from "../../../repositories/MySqlOperatorRepo
 import { connection } from "../../../repositories/databases/mysql/connection";
 import { BulkChangePriority } from "../../../../use-cases/airports/bulk-change-priority/BulkChangePriority";
 import { BulkChangePriorityDTO } from "../../../../use-cases/airports/bulk-change-priority/BulkChangePriorityDTO";
+import { validateBulkChangePriorityPayload } from "../../../utils/validations/BulkChangePriorityPayload";
 
 class BulkChangeAirportPriorityController extends BaseController {
   constructor(private useCase: BulkChangePriority) {
@@ -15,6 +16,12 @@ class BulkChangeAirportPriorityController extends BaseController {
 
   public async handle(req: Request, res: Response): Promise<void> {
     try {
+      const validatePayload = validateBulkChangePriorityPayload(req.body);
+      if (validatePayload.error) {
+        this.clientError(res, validatePayload.error);
+        return;
+      }
+
       const dto: BulkChangePriorityDTO = req.body as BulkChangePriorityDTO;
       await this.useCase.execute(dto);
       this.created(res);

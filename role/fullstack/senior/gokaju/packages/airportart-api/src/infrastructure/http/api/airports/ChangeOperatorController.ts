@@ -5,6 +5,7 @@ import { ChangeOperatorDTO } from "../../../../use-cases/airports/change-operato
 import { MySqlAirportRepository } from "../../../repositories/MySqlAirportRepository";
 import { MySqlOperatorRepository } from "../../../repositories/MySqlOperatorRepository";
 import { connection } from "../../../repositories/databases/mysql/connection";
+import { validateChangeOperatorPayload } from "../../../utils/validations/ChangeOrderPayload";
 
 class ChangeOperatorController extends BaseController {
   constructor(private useCase: ChangeOperator) {
@@ -13,6 +14,12 @@ class ChangeOperatorController extends BaseController {
 
   public async handle(req: Request, res: Response): Promise<void> {
     try {
+      const validatePayload = validateChangeOperatorPayload(req.body);
+      if (validatePayload.error) {
+        this.clientError(res, validatePayload.error);
+        return;
+      }
+
       const dto: ChangeOperatorDTO = req.body as ChangeOperatorDTO;
       await this.useCase.execute(dto);
       this.created(res);
