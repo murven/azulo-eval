@@ -10,16 +10,21 @@ export class MySqlAirportRepository implements AirportRepository {
   async findById(id: number): Promise<Airport> {
     return new Promise((resolve, reject) => {
       this.db.query<AirportModel[]>(
-        "SELECT id,name,airportOperatorId FROM Airport WHERE id = ?",
+        "SELECT id,name,airportOperatorId,priorityOrder FROM Airport WHERE id = ?",
         [id],
         (err, res) => {
           if (err) reject(err);
           else {
+            if (res.length === 0) {
+              resolve(null);
+              return;
+            }
             const airport = new Airport();
             airport.id = res[0].id;
             airport.name = res[0].name;
             airport.operator = new Operator();
             airport.operator.id = res[0].airportOperatorId;
+            airport.priority = res[0].priorityOrder;
             resolve(airport);
           }
         }
@@ -30,6 +35,13 @@ export class MySqlAirportRepository implements AirportRepository {
   async save(airport: Airport): Promise<void> {
     this.db.query("UPDATE Airport SET airportOperatorId = ? WHERE id = ?", [
       airport.operator.id,
+      airport.id,
+    ]);
+  }
+
+  async updatePriority(airport: Airport): Promise<void> {
+    this.db.query("UPDATE Airport SET priorityOrder = ? WHERE id = ?", [
+      airport.priority,
       airport.id,
     ]);
   }
