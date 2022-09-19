@@ -1,2 +1,3 @@
 #  Se ignoran los modulos de de node para que  no se carguen en al repositorio
 node_modules
+dist
