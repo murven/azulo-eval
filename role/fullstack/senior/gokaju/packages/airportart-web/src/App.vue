@@ -22,6 +22,7 @@ const getAirPorts = async () => {
 
 onMounted(async () => {
   getAirPorts();
+  console.log("mounted", import.meta.env.VITE_API_URL);
 });
 </script>
 
